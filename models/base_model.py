@@ -27,7 +27,7 @@ class BaseModel():
     def __str__(self):
         """Returns the formatted output of the print statement on an instance.
         """
-        return (f"[{BaseModel.__name__}] ({self.id}) {self.__dict__}")
+        return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
 
     def save(self):
         """Updates the updated_at instance attribute with current datetime."""
@@ -45,7 +45,7 @@ class BaseModel():
         Returns:
             A dictionary containing all the key/values of an instance.
         """
-        self.__dict__["__class__"] = str(BaseModel.__name__)
+        self.__dict__["__class__"] = str(self.__class__.__name__)
         if isinstance(self.created_at, str):
             self.created_at = datetime.fromisoformat(self.created_at)
         self.created_at = self.created_at.isoformat()
