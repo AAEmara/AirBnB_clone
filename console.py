@@ -78,6 +78,7 @@ class HBNBCommand(cmd.Cmd):
             for key, obj in objs.items():
                 if obj.id == tokens[1]:
                     del objs[key]
+                    storage.save()
                     return ()
             print("** no instance found **")
 
@@ -106,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
             line (string): User's commands (class_name id attr_name attr_val).
         """
         tokens = line.split(" ")
-        if tokens[0] != "BaseModel":
+        if not len(tokens):
             return (print("** class name missing **"))
         elif tokens[0] not in ["BaseModel"]:
             return (print("** class doesn't exist **"))
