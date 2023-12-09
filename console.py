@@ -3,13 +3,19 @@
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """HNBCommand Class."""
     prompt = "(hbnb) "
-    classes = ["BaseModel", "User"]
+    classes = ["BaseModel", "User", "Place", "State", "City",
+               "Amenity", "Review"]
 
     def do_EOF(self, line):
         """Exits the command prompt cleanly when the user passes `EOF`.
@@ -39,10 +45,7 @@ class HBNBCommand(cmd.Cmd):
         elif line not in cls_list:
             print("** class doesn't exist **")
         else:
-            if line == cls_list[0]:
-                new_instance = BaseModel()
-            elif line == cls_list[1]:
-                new_instance = User()
+            new_instance = eval(line)()
             new_instance.save()
             print(new_instance.id)
 
