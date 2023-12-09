@@ -28,7 +28,7 @@ class FileStorage():
 
     def save(self):
         """Serializes the Objects to a JSON file."""
-        with open(FileStorage.__file_path, mode='w', encoding="utf-8")
+        with open(FileStorage.__file_path, mode='w', encoding="utf-8")\
         as w_file:
             json.dump(
                 {k: v.to_dict() for k, v in FileStorage.__objects.items()},
@@ -37,7 +37,7 @@ class FileStorage():
     def reload(self):
         """Deserializes the JSON file to Objects."""
         try:
-            with open(FileStorage.__file_path, mode='r', encoding="utf-8")
+            with open(FileStorage.__file_path, mode='r', encoding="utf-8")\
             as r_file:
                 py_obj = json.load(r_file)
         except FileNotFoundError:
