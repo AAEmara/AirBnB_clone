@@ -107,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
             line (string): User's commands (class_name id attr_name attr_val).
         """
         tokens = line.split(" ")
-        if not len(tokens):
+        if not line:
             return (print("** class name missing **"))
         elif tokens[0] not in ["BaseModel"]:
             return (print("** class doesn't exist **"))
