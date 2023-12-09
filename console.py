@@ -2,12 +2,14 @@
 """Console module that defines HBNBCommand Class."""
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """HNBCommand Class."""
     prompt = "(hbnb) "
+    classes = ["BaseModel", "User"]
 
     def do_EOF(self, line):
         """Exits the command prompt cleanly when the user passes `EOF`.
@@ -23,7 +25,7 @@ class HBNBCommand(cmd.Cmd):
         return
 
     def do_create(self, line):
-        """Creates a new instance of `BaseModel`
+        """Creates a new instance of a given <class name>.
         Note:
             This method saves the new instance to a JSON file,
             and prints the `id`.
@@ -31,12 +33,16 @@ class HBNBCommand(cmd.Cmd):
         Attr:
             line (string): Contains the user's commands.
         """
+        cls_list = HBNBCommand.classes
         if not line:
             print("** class name missing **")
-        elif line != "BaseModel":
+        elif line not in cls_list:
             print("** class doesn't exist **")
         else:
-            new_instance = BaseModel()
+            if line == cls_list[0]:
+                new_instance = BaseModel()
+            elif line == cls_list[1]:
+                new_instance = User()
             new_instance.save()
             print(new_instance.id)
 
@@ -47,9 +53,10 @@ class HBNBCommand(cmd.Cmd):
             line (string): User's commands (class name and id).
         """
         tokens = line.split(" ")
+        cls_list = HBNBCommand.classes
         if not line:
             print("** class name missing **")
-        elif tokens[0] != "BaseModel":
+        elif tokens[0] not in cls_list:
             print("** class doesn't exist **")
         elif len(tokens) < 2:
             print("** instance id missing **")
@@ -67,9 +74,10 @@ class HBNBCommand(cmd.Cmd):
             line (string): User's commands (class name and id).
         """
         tokens = line.split(" ")
+        cls_list = HBNBCommand.classes
         if not line:
             print("** class name missing **")
-        elif tokens[0] != "BaseModel":
+        elif tokens[0] not in cls_list:
             print("** class doesn't exist **")
         elif len(tokens) < 2:
             print("** instance id missing **")
@@ -88,13 +96,21 @@ class HBNBCommand(cmd.Cmd):
         Attr:
             line (string): User's commands (class name [optional]).
         """
-        if line not in ["BaseModel", ""]:
+        cls_list = HBNBCommand.classes
+        all_list = cls_list.copy()
+        all_list.append("")
+        if line not in all_list:
             print("** class doesn't exist **")
         else:
             objs = storage.all()
             objs_str = list()
-            for key, val in objs.items():
-                objs_str.append(str(val))
+            if line != "":
+                for key, val in objs.items():
+                    if type(val).__name__ == line:
+                        objs_str.append(str(val))
+            elif line == "":
+                for key, val in objs.items():
+                    objs_str.append(str(val))
             print(objs_str)
 
     def do_update(self, line):
@@ -107,9 +123,10 @@ class HBNBCommand(cmd.Cmd):
             line (string): User's commands (class_name id attr_name attr_val).
         """
         tokens = line.split(" ")
+        cls_list = HBNBCommand.classes
         if not line:
             return (print("** class name missing **"))
-        elif tokens[0] not in ["BaseModel"]:
+        elif tokens[0] not in cls_list:
             return (print("** class doesn't exist **"))
         elif len(tokens) < 2:
             return (print("** instance id missing **"))
@@ -123,6 +140,7 @@ class HBNBCommand(cmd.Cmd):
                         return (print("** value missing **"))
                     else:
                         obj.__dict__[tokens[2]] = tokens[3].split("\"")[1]
+                        obj.save()
                         return ()
             print("** no instance found **")
 
