@@ -66,7 +66,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             objs = storage.all()
             for key, obj in objs.items():
-                if obj.id == tokens[1]:
+                if obj.id == tokens[1] and type(obj).__name__ == tokens[0]:
                     return (print(obj))
             print("** no instance found **")
 
@@ -87,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             objs = storage.all()
             for key, obj in objs.items():
-                if obj.id == tokens[1]:
+                if obj.id == tokens[1] and type(obj).__name__ == tokens[0]:
                     del objs[key]
                     storage.save()
                     return ()

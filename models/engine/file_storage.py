@@ -3,6 +3,11 @@
 import json
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage():
@@ -28,8 +33,8 @@ class FileStorage():
 
     def save(self):
         """Serializes the Objects to a JSON file."""
-        with open(FileStorage.__file_path, mode='w', encoding="utf-8")\
-        as w_file:
+        filename = FileStorage.__file_path
+        with open(filename, mode='w', encoding="utf-8") as w_file:
             json.dump(
                 {k: v.to_dict() for k, v in FileStorage.__objects.items()},
                 w_file)
@@ -37,15 +42,12 @@ class FileStorage():
     def reload(self):
         """Deserializes the JSON file to Objects."""
         try:
-            with open(FileStorage.__file_path, mode='r', encoding="utf-8")\
-            as r_file:
+            filename = FileStorage.__file_path
+            with open(filename, mode='r', encoding="utf-8") as r_file:
                 py_obj = json.load(r_file)
         except FileNotFoundError:
             pass
         else:
             for key, val in py_obj.items():
                 cls_name = val["__class__"]
-                if cls_name == "BaseModel":
-                    FileStorage.__objects[key] = BaseModel(**val)
-                elif cls_name == "User":
-                    FileStorage.__objects[key] = User(**val)
+                FileStorage.__objects[key] = eval(cls_name)(**val)
