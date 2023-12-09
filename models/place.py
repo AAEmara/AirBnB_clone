@@ -20,6 +20,3 @@ class Place(BaseModel):
     def __init__(self, **kwargs):
         """Initializing Place Class."""
         super().__init__(**kwargs)
-        city_id = City.id
-        user_id = User.id
-        amenity_ids = Amenity.id

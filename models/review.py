@@ -12,5 +12,3 @@ class Review(BaseModel):
     def __init__(self, **kwargs):
         """Initializing Review Class."""
         super().__init__(**kwargs)
-        self.place_id = Place.id
-        self.user_id = User.id
