@@ -1,7 +1,6 @@
 #!/user/bin/python3
 """city Module that defines City Class."""
 from models.base_model import BaseModel
-from models.state import State
 
 
 class City(BaseModel):
