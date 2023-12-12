@@ -33,6 +33,8 @@ class BaseModel():
         """Updates the updated_at instance attribute with current datetime."""
         self.updated_at = datetime.now()
         models.storage.save()
+        self.updated_at = datetime.fromisoformat(self.updated_at)
+        self.created_at = datetime.fromisoformat(self.created_at)
 
     def to_dict(self):
         """Returns a dictionary containing all keys/values of an instance.
